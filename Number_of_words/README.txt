@@ -1,0 +1,1 @@
+Reads and counts the number of words and characters in a text file
