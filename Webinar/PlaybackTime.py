@@ -14,8 +14,8 @@ def qu(s):  # Ввод времени
     while True:
         t = input(s)
         print()
-        if (t.isdigit()):
-            if (int(t) >= 0):
+        if t.isdigit():
+            if int(t) >= 0:
                 return int(t)
             else:
                 print("Число должно быть положительное!\n")
@@ -49,15 +49,15 @@ def outPut(t):  # Вывод работы основной
     a = [0.25, 0.5, 0.75, 1.25, 1.5, 1.75, 2, 2.5, 3]
     print("\nВидео длится при скорости воспроизведения: ", end="")
     for i in a:
-        if (i == 1.25):
+        if i == 1.25:
             print()
         print("\n * " + str(i) + "x) ", end="")
         t1_out = schet(t, i)
-        if (t1_out[0] != 0):
+        if t1_out[0] != 0:
             print(t1_out[0], "часов", end=" ")
-        if (t1_out[1] != 0):
+        if t1_out[1] != 0:
             print(t1_out[1], "минут", end=" ")
-        if (t1_out[2] != 0):
+        if t1_out[2] != 0:
             print(t1_out[2], "секунд", end=" ")
     return
 
@@ -68,13 +68,13 @@ def algorithm():  # Основной алгоритм
     s = qu("Введите сколько секунд идёт исходное видео: ")
     t = (h * 60 * 60) + (m * 60) + s
     print("Исходное видео(скорость воспроизведения = 1) длится: ", end="")
-    if (h != 0):
+    if h != 0:
         print(h, "часов", end=" ")
-    if (m != 0):
+    if m != 0:
         print(m, "минут", end=" ")
-    if (s != 0):
+    if s != 0:
         print(s, "секунд", end=" ")
-    if (h == 0 and m == 0 and s == 0):
+    if h == 0 and m == 0 and s == 0:
         print("0 секунд")
         print("Соответственно всегда будет длиться 0 секунд")
         exi_t()
