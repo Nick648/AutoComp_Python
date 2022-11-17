@@ -57,10 +57,11 @@ def get_str_size(size_bytes):  # Return str of different format of size
     return f'{size_bytes} bytes = {size_kilobytes} KB = {size_megabytes} MB = {size_gigabytes} GB'
 
 
-def display_info_dir_path(dir_path, dir_names, filenames, total_size_dir):  # Output all information dir
+def display_info_dir_path(dir_path, dir_names, filenames, format_files_dir, total_size_dir):  # Output all information
     print(f'dir_path: {dir_path}; {type(dir_path)}; {len(dir_path)}')
     print(f'dir_names: {dir_names}; {type(dir_names)}; {len(dir_names)}')
     print(f'filenames: {filenames}; {type(filenames)}; {len(filenames)}')
+    print(f'Formats(count): {format_files_dir}')
     print(f'Total_size_dir: {get_str_size(total_size_dir)}')
     yellow_out('*' * 50)
 
@@ -72,19 +73,30 @@ def dir_info(initial_path):  # Main algorithm of program
         total_filenames, total_dir_names, total_size_dir = len(filenames), len(dir_names), 0
         total_files += len(filenames)
         total_dirs += len(dir_names)
+        format_files_dir = dict()
 
         for name in filenames:
             path_name = os.path.join(dir_path, name)
             total_size_dir += os.path.getsize(path_name)  # os.stat(path_name).st_size
-            key = name[name.rfind('.'):].lower()
+
+            if name.rfind('.') != -1:
+                key = name[name.rfind('.'):].lower()
+            else:
+                key = name.lower()
+
             if key in format_files:
                 format_files[key] += 1
             else:
                 format_files[key] = 1
 
+            if key in format_files_dir:
+                format_files_dir[key] += 1
+            else:
+                format_files_dir[key] = 1
+
         total_size += total_size_dir
         size_dirs[dir_path] = total_size_dir
-        display_info_dir_path(dir_path, dir_names, filenames, total_size_dir)  # Output all info
+        display_info_dir_path(dir_path, dir_names, filenames, format_files_dir, total_size_dir)  # Output all info
 
     size_dirs[initial_path] = total_size
     print(f'Total folders: {total_dirs}')
