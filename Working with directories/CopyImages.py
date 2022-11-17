@@ -20,15 +20,16 @@ def main(start_dir):  # The main algorithm of the program
         print("There is no such way!")
         exi_t('We are very sorry that we could not help you. Goodbye.')  # exit
 
-    print("Current directory(startup):", os.getcwd())
-    os.chdir(start_dir)
-    print("Current directory(new):", os.getcwd())
+    if os.getcwd() != start_dir:
+        print("Current directory(startup):", os.getcwd())
+        os.chdir(start_dir)
+        print(f"The current working directory has changed to: {os.getcwd()}")
 
     if not os.path.exists("new_folder_for_files"):  # Creating a folder for copying files
         os.mkdir("new_folder_for_files")
 
     # print("All folders and files:", os.listdir())
-    new_loc_folder = start_dir + r'\new_folder_for_files'
+    new_loc_folder = os.path.join(start_dir, 'new_folder_for_files')
 
     for file in os.listdir():
         # print(file, type(file), file[-3:])
@@ -68,6 +69,5 @@ if __name__ == "__main__":
     Enjoy using it!
     '''
     print(greeting)
-    # start_dir_in = input('Start_dir: ')
-    start_dir_in = r'C:\User\Изображения\Картинки'
+    start_dir_in = input('Start_dir(full way): ')
     main(start_dir_in)

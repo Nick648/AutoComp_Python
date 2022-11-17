@@ -37,39 +37,15 @@ def exi_t():  # Выход из программы
     exit()
 
 
-def convert_with_converter():  # Not work
-    from converter import Converter
-    conv = Converter()
-    convert = conv.convert('test/test1.avi', 'test/test1.mp4', {
-        'format': 'mp4',
-        'audio': {
-            'codec': 'aac',
-            'samplerate': 11025,
-            'channels': 2
-        },
-        'video': {
-            'codec': 'hevc',
-            'width': 720,
-            'height': 400,
-            'fps': 25
-        }})
-
-    for timecode in convert:
-        print(f'\rConverting ({timecode:.2f}) ...')
-
-
 def new_folder(dir_path):  # Creating a new folder for converted videos
-    # print("Current directory(startup):", os.getcwd())
-    os.chdir(dir_path)
     if os.getcwd() != dir_path:
+        os.chdir(dir_path)
         yellow_out(f"The current working directory has changed to: {os.getcwd()}")
 
     name_dir = "new_folder_for_converted_files"
     if not os.path.exists(name_dir):  # Creating a folder for copying files
         os.mkdir(name_dir)
 
-    # print("All folders and files:", os.listdir())
-    # new_loc_folder = os.getcwd() + fr'\{name_dir}'
     new_loc_folder = os.path.join(os.getcwd(), name_dir)
     return new_loc_folder
 
@@ -117,7 +93,7 @@ def main():
     while True:
         dir_path = input("Path to the directory: ").strip()
         if os.path.exists(dir_path):
-            done_out(f"Path: '{dir_path}' status: OK")
+            done_out(f"Path: '{dir_path}' status: OK\n")
             convert_files(dir_path)
             break
         else:

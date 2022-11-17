@@ -49,7 +49,7 @@ def delete_files(dir_path):
     count_done_files, count_error_files = [], []
     for file in os.listdir(dir_path):
         file_count += 1
-        if file[file.rfind('.'):].lower() == type_file:
+        if file[file.rfind('.'):].lower() == type_file:  # JPG == jpg !!!
             try:
                 os.chmod(os.path.join(dir_path, file), stat.S_IWRITE)  # Не удаляет без этого
                 os.remove(os.path.join(dir_path, file))
@@ -71,7 +71,7 @@ def delete_files(dir_path):
 
 def main():
     while True:
-        dir_path = input("Path to the directory: ")
+        dir_path = input("Path to the directory: ").strip()
         if os.path.exists(dir_path):
             done_out(f"Path: '{dir_path}' status: OK")
             delete_files(dir_path)

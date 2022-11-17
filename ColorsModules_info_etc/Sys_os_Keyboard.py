@@ -48,8 +48,8 @@ def out_keywords():
 
 
 if __name__ == '__main__':
-    hello = YELLOW + " Module os and keyboard " + RESET
-    print("\n", "{:*^75}".format(hello), "\n", sep='')
+    hello = YELLOW + " Module os and keyboard and keyword" + RESET
+    print("\n", "{:*^80}".format(hello), "\n", sep='')
     out_consts()
     # check_keyboard_keys()
     # out_keywords()

@@ -1,4 +1,4 @@
-# Add encoding file and colorama !
+# Add encoding file !
 import keyboard
 import random
 import time
@@ -17,6 +17,7 @@ RESET = Style.RESET_ALL
 # Const os
 # HOME_DIR = os.path.expanduser('~')
 DESKTOP_DIR = os.path.expanduser('~') + r'\Desktop'
+encode = ''
 
 
 def error_out(s):  # Вывод красного текста
@@ -34,6 +35,7 @@ def yellow_out(s):  # Вывод жёлтого текста
 # print("Путь к рабочему столу: " + DESKTOP_DIR + "\n")
 
 def file_open():  # Проверка готовности файла
+    global encode
     while True:
         print("Создайте на рабочем столе текстовый файл с нужным содержанием и именем: 'text.txt'")
         print("Введите '-' если хотите выйти из программы")
@@ -48,11 +50,11 @@ def file_open():  # Проверка готовности файла
                 with open(file=DESKTOP_DIR + r'\text.txt', mode='r') as file:
                     done_out('\nВсё ок! Файл открыт!\n')
 
-                    global encode
                     try:
                         encode = file.encoding
                         # print(f"Encode: {encode}")
-                    except:
+                    except Exception as e:
+                        error_out(f"\n\tError:\n\tType: {type(e)}\n\tName: {type(e).__name__} was raised: {e}\n")
                         error_out("Кодировка файла не распознана! По умолчанию будет: 'utf-8'")
                         encode = 'utf-8'
 
@@ -66,7 +68,7 @@ def file_open():  # Проверка готовности файла
 
 
 def exec_app():  # Основной алгоритм
-    description = "Для написания текста зажмите клавишу 'Ctrl' \nДля выхода из программы нажмите 'esc'"
+    description = "Для написания текста зажмите клавишу 'Ctrl' \nДля выхода из программы нажмите 'Esc'"
     description += "\nНажатие клавиши 'esc' ОЧЕНЬ ВАЖНО для корректного завершения программы"
     description += "\nP.S. Программа как и человек может ошибаться! " \
                    "Советуем посмотреть правильность набранного текста в итоге"

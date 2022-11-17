@@ -5,7 +5,7 @@ import os
 from colorama import Fore, Back, Style
 
 # colorama.init()
-
+pg.FAILSAFE = True  # Ctrl+C остановка программы
 # Const module colorama
 RED = Fore.LIGHTRED_EX
 GREEN = Fore.LIGHTGREEN_EX

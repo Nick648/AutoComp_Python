@@ -1,6 +1,4 @@
-import pyautogui as pg
 import time as tm
-
 import pyautogui as pg
 
 pg.FAILSAFE = True  # Ctrl+C остановка программы

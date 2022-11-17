@@ -1,6 +1,6 @@
 import pyautogui as auto
 import keyboard as key
-import mouse
+# import mouse
 
 
 def main():
@@ -8,7 +8,6 @@ def main():
     stop_key = input('Клавиша остановки: ')
 
     i = 0
-
     while True:
         if key.is_pressed(start_key):
             # auto.click()

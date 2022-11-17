@@ -39,18 +39,20 @@ def reading_clipboard():
         copy_im = ImageGrab.grabclipboard()
         if old_copy != copy_im and copy_im is not None:
             count += 1
-            print(copy_im, type(copy_im), GREEN + "Copy Done!" + RESET)
             old_copy = copy_im
             time_now = datetime.datetime.today()
             time_h, time_m, time_s = time_now.hour, time_now.minute, time_now.second
-            copy_im.save(f'{WAY_DIR}/{count}  ({time_h}-{time_m}-{time_s}).png', 'PNG')
+            name_screen = os.path.join(WAY_DIR, f'Screen {count}  ({time_h}-{time_m}-{time_s}).png')
+            print(copy_im, type(copy_im))
+            print(f'\t{GREEN + "Copy Done!" + RESET} Save as: {name_screen}')
+            copy_im.save(name_screen, 'PNG')
             print(YELLOW + "=" * 30 + RESET)
         if keyboard.is_pressed('Esc'):
             break
 
         time.sleep(1)
 
-    print(f'Total screenshots: {count}')
+    print(f'\tTotal screenshots: {count}')
 
 
 def main():
@@ -59,4 +61,10 @@ def main():
 
 
 if __name__ == '__main__':
+    greeting = '''
+        A program for saving screenshots taken. Click for:
+        Esc - for early exit;
+        Enjoy using it!
+        '''
+    print(YELLOW + greeting + RESET)
     main()
