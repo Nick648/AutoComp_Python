@@ -35,15 +35,74 @@ def exi_t():  # Выход из программы
 
 def display_tree_dir(initial_path, size_dirs):  # Output of the directory tree and percent size
     done_out('\nOutput of the directory tree and their percentage of the total size:\n')
+
+    # Combining directory sizes into a tuple:
+    for path, size in size_dirs.items():
+        if path == initial_path:
+            continue
+        t_size = 0
+        for item in size_dirs:
+            if item != path and path in item:
+                t_size += size_dirs[item]
+                # print(f'\tPath: {path}, item: {item}, size_dirs[item]: {size_dirs[item]} , t_size: {t_size}')
+        if t_size != 0:
+            size_dirs[path] = (size, size + t_size)
+            # print(f'Size_dirs[{path}] = {size_dirs[path]}')
+
+    max_size_dir, min_size_dir = 0, size_dirs[initial_path]
+    max_size_path, min_size_path = '', initial_path
     lower_level = initial_path.count("\\")
     for dir_path, size_dir in size_dirs.items():
         dif_level = dir_path.count("\\") - lower_level
         if dif_level > 0:
-            perc_size = "{:.3f}".format(size_dir / size_dirs[initial_path] * 100) + '%'
             indent = '\t' * dif_level
+            if isinstance(size_dir, tuple):
+                if size_dir[1] > max_size_dir:
+                    max_size_dir = size_dir[1]
+                    max_size_path = dir_path
+                if size_dir[1] < min_size_dir:
+                    min_size_dir = size_dir[1]
+                    min_size_path = dir_path
+
+                perc_size = "{:.3f}".format(size_dir[0] / size_dirs[initial_path] * 100) + '%'
+                common_perc_size = "{:.2f}".format(size_dir[1] / size_dirs[initial_path] * 100) + '%'
+                print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}  ({YELLOW + common_perc_size})')
+                continue
+
+            if size_dir > max_size_dir:
+                max_size_dir = size_dir
+                max_size_path = dir_path
+            if size_dir < min_size_dir:
+                min_size_dir = size_dir
+                min_size_path = dir_path
+            perc_size = "{:.3f}".format(size_dir / size_dirs[initial_path] * 100) + '%'
             print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}')
         else:
             print(dir_path)
+
+    max_perc_size = "{:.3f}".format(max_size_dir / size_dirs[initial_path] * 100) + '%'
+    min_perc_size = "{:.3f}".format(min_size_dir / size_dirs[initial_path] * 100) + '%'
+    max_size_dir, min_size_dir = get_max_str_size(max_size_dir), get_max_str_size(min_size_dir)
+    print(f'\nMaximum directory size: {max_size_path} = {max_size_dir}  ->  {YELLOW + max_perc_size}')
+    print(f'Minimum directory size: {min_size_path} = {min_size_dir}  ->  {YELLOW + min_perc_size}')
+
+
+def get_max_str_size(size_bytes):  # Return str of max format of size
+    if size_bytes // 1024 == 0:
+        size_bytes = "{:.3f}".format(size_bytes)
+        return f'{size_bytes} bytes'
+    size_kilobytes = size_bytes / 1024
+    if size_kilobytes // 1024 == 0:
+        size_kilobytes = "{:.3f}".format(size_kilobytes)
+        return f'{size_kilobytes} KB'
+    size_megabytes = size_kilobytes / 1024
+    if size_megabytes // 1024 == 0:
+        size_megabytes = "{:.3f}".format(size_megabytes)
+        return f'{size_megabytes} MB'
+
+    size_gigabytes = size_megabytes / 1024
+    size_gigabytes = "{:.3f}".format(size_gigabytes)
+    return f'{size_gigabytes} GB'
 
 
 def get_str_size(size_bytes):  # Return str of different format of size
@@ -96,12 +155,15 @@ def dir_info(initial_path):  # Main algorithm of program
 
         total_size += total_size_dir
         size_dirs[dir_path] = total_size_dir
-        display_info_dir_path(dir_path, dir_names, filenames, format_files_dir, total_size_dir)  # Output all info
+
+        display_info_dir_path(dir_path, dir_names, filenames, format_files_dir, total_size_dir)  # Output all info!
 
     size_dirs[initial_path] = total_size
     print(f'Total folders: {total_dirs}')
     print(f'Total files: {total_files}\n\tFormats: count.')
-    for format_name, count in format_files.items():
+    # sorted_tuple = sorted(d.items(), key=lambda x: x[0])  # Сортировка словаря по ключу
+    # sorted_tuple = sorted(d.items(), key=lambda x: x[1])  # Сортировка словаря по значению
+    for format_name, count in reversed(sorted(format_files.items(), key=lambda x: x[1])):
         print(f"\t{format_name:5}: {count:7}")
     print(f'Total size: {get_str_size(total_size)}')
     display_tree_dir(initial_path, size_dirs)

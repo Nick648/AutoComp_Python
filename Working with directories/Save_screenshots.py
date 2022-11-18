@@ -62,7 +62,7 @@ def main():
 
 if __name__ == '__main__':
     greeting = '''
-        A program for saving screenshots taken. Click for:
+        A program for saving screenshots taken in PNG format. Click for:
         Esc - for early exit;
         Enjoy using it!
         '''
