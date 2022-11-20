@@ -11,6 +11,8 @@ from colorama import Fore, Style
 RED = Fore.LIGHTRED_EX
 GREEN = Fore.LIGHTGREEN_EX
 YELLOW = Fore.LIGHTYELLOW_EX
+CYAN = Fore.LIGHTCYAN_EX
+MAGENTA = Fore.LIGHTMAGENTA_EX
 RESET = Style.RESET_ALL
 
 # Consts
@@ -20,6 +22,17 @@ DESKTOP_DIR = os.path.expanduser('~') + r'\Desktop'
 CUR_DIR = os.path.abspath(os.curdir)
 OS_DIR = os.curdir  # .
 CUR_DIR_FILE = os.path.abspath(__file__)  # With name file.py
+
+
+def display_env_vars():
+    # Создаём цикл, чтобы вывести все переменные среды
+    print(CYAN + '\t« The keys and values of all environment variables »' + RESET)
+    for key in os.environ:
+        print(f'{key} => {os.environ[key]}')
+
+    print(MAGENTA + f'\tThe value of USERNAME is: {os.environ["USERNAME"]}' + RESET)
+    os.environ["DATA"] = '20.11.22'
+    print(f'\tNew Var = {os.environ["DATA"]}')
 
 
 def out_consts():  # Вывод констант
@@ -51,5 +64,6 @@ if __name__ == '__main__':
     hello = YELLOW + " Module os and keyboard and keyword" + RESET
     print("\n", "{:*^80}".format(hello), "\n", sep='')
     out_consts()
+    display_env_vars()
     # check_keyboard_keys()
     # out_keywords()
