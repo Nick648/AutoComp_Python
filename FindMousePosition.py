@@ -3,17 +3,17 @@ import tkinter as tk
 import keyboard
 import time
 from math import sqrt
+from colorama import Fore, Style, init
 
-import colorama
-from colorama import Fore, Back, Style
-
-# colorama.init()
+init(autoreset=True)
 
 # Const module colorama
 RED = Fore.LIGHTRED_EX
 GREEN = Fore.LIGHTGREEN_EX
 YELLOW = Fore.LIGHTYELLOW_EX
 RESET = Style.RESET_ALL
+
+WIDTH, HEIGHT = pg.size()  # Get the size of the primary monitor.
 
 
 # Узнать координаты непрерывно
@@ -34,7 +34,6 @@ def find_pos_infinity():
 # pg.alert(text = 'To use, press: "Ctrl"', title = 'Position of mouse', button = 'OK')
 
 def main():
-    WIDTH, HEIGHT = pg.size()  # Get the size of the primary monitor.
     print(f"SIZE WINDOW(x,y): {WIDTH}x{HEIGHT}\n")
 
     root = tk.Tk()
@@ -43,7 +42,7 @@ def main():
 
     root.title('Location mouse')
     greeting = f"Size window: {WIDTH}x{HEIGHT}\n" + "Press: 'Ctrl' to start\n" + "Press: 'Esc' to stop"
-    label = tk.Label(root, font=('Ubuntu', 30), text=greeting)
+    label = tk.Label(root, font=('Ubuntu', 30), fg='magenta', text=greeting)
     label.pack()
     mouse_x0 = -1
     mouse_y0 = -1
@@ -53,18 +52,19 @@ def main():
             label.config(text=bye, fg='green')
             try:
                 root.update()
-            except Exception as e:
-                print(RED, e, RESET, sep='')
-                break
+            except Exception as ex:
+                print(RED + f'Error: {ex}')
             break
+
         if keyboard.is_pressed('Ctrl'):
-            mouse_x, mouse_y = pg.position()  # Get the XY position of the mouse.
+            mouse_x, mouse_y = pg.position()  # Get the X and Y position of the mouse.
             if mouse_x0 == -1 and mouse_y0 == -1:
-                s = f"Location mouse: {mouse_x} {mouse_y}"
+                s = f"Size window: {WIDTH}x{HEIGHT}\n"
+                s += f"Location mouse: {mouse_x} {mouse_y}"
                 print(s, "\n", "-" * 20)
                 mouse_x0 = mouse_x
                 mouse_y0 = mouse_y
-                label.config(text=s)
+                label.config(text=s, fg='black')
             else:
                 distance_x = mouse_x - mouse_x0
                 distance_y = mouse_y - mouse_y0
@@ -82,22 +82,23 @@ def main():
                 print(s[s.find('\n') + 1:], "\n", "-" * 20)
                 mouse_x0 = mouse_x
                 mouse_y0 = mouse_y
-                label.config(text=s)
+                label.config(text=s, fg='black')
 
             time.sleep(0.3)
 
         try:
             root.update()
-        except Exception as e:
-            print(RED, e, RESET, sep='')
+        except Exception as ex:  # TclError
+            print(RED + f'Error: {ex} \n\tName: {type(ex).__name__}; Type: {type(ex)}')
             break
 
     # root.mainloop()
-    print("\n------->", GREEN, "Done", RESET)
+    print("\n------->", GREEN + "Done")
     time.sleep(2)
 
 
 if __name__ == '__main__':
-    hello = YELLOW + " A program for finding the mouse position on the screen " + RESET
+    hello = YELLOW + " A program for finding the mouse position on the screen "
     print("\n", "{:*^75}".format(hello), "\n")
     main()
+    # find_pos_infinity()
