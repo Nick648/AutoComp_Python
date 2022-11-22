@@ -1,8 +1,7 @@
 import os
-import stat
 import time
-
 from colorama import Fore, Style, init
+import shutil
 
 init(autoreset=True)
 
@@ -14,15 +13,15 @@ RESET = Style.RESET_ALL
 
 
 def error_out(s):  # Вывод красного текста
-    print(RED + s, sep='')
+    print(RED + s)
 
 
 def done_out(s):  # Вывод зелёного текста
-    print(GREEN + s, sep='')
+    print(GREEN + s)
 
 
 def yellow_out(s):  # Вывод жёлтого текста
-    print(YELLOW + s, sep='')
+    print(YELLOW + s)
 
 
 def exi_t():  # Выход из программы
@@ -30,74 +29,68 @@ def exi_t():  # Выход из программы
     for i in a:
         print(GREEN + i, end='')
         time.sleep(0.025)  # Приостановить выполнение программы
-    time.sleep(10)
+    time.sleep(7)
     exit()
 
 
-def new_folder(dir_path):  # Creating a new folder for converted videos
-    if os.getcwd() != dir_path:
-        os.chdir(dir_path)
-        yellow_out(f"The current working directory has changed to: {os.getcwd()}")
-
-    name_dir = "new_folder_for_converted_files"
-    if not os.path.exists(name_dir):  # Creating a folder for copying files
-        os.mkdir(name_dir)
-
-    new_loc_folder = os.path.join(os.getcwd(), name_dir)
-    return new_loc_folder
-
-
-def delete_files(dir_path):
+def copy_paste_files(dir_path_copy, dir_path_paste):
     # os.walk() # Идет вглубь каталогов
-    total_files = len(os.listdir(dir_path))
-    yellow_out(f'List of files: {os.listdir(dir_path)}')
-    yellow_out(f'Total files: {len(os.listdir(dir_path))}\n')
+    total_files = len(os.listdir(dir_path_copy))
+    yellow_out(f'List of files: {os.listdir(dir_path_copy)}')
+    yellow_out(f'Total files: {len(os.listdir(dir_path_copy))}\n')
 
-    type_file = input('Type of file to delete: ').strip().lower()
+    type_file = input('Type of file to copy: ').strip().lower()
     if type_file[0] != '.':
         type_file = '.' + type_file
-    yellow_out(f'Type of file to delete: {type_file}\n')
+    yellow_out(f'Type of file to copy: {type_file}\n')
 
     file_count = 0
     count_done_files, count_error_files = [], []
-    for file in os.listdir(dir_path):
+    for file in os.listdir(dir_path_copy):
         file_count += 1
         if file[file.rfind('.'):].lower() == type_file:  # JPG == jpg !!!
             try:
-                os.chmod(os.path.join(dir_path, file), stat.S_IWRITE)  # Не удаляет без этого
-                os.remove(os.path.join(dir_path, file))
-                done_out(f'\tCount {file_count:3}/{total_files}:  File "{file}" was deleted!\tstatus: Done')
+                copy_file = os.path.join(dir_path_copy, file)
+                paste_file = os.path.join(dir_path_paste, file)
+                shutil.copyfile(copy_file, paste_file)  # , follow_symlinks=False (For copy just links)
+                done_out(f'\tCount {file_count:3}/{total_files}:  File "{file}" was copied!\tstatus: Done')
                 count_done_files.append(file)
-            except Exception as ex:
+            except Exception as ex: # PermissionError
                 error_out(f"\n\tError:\tType: {type(ex)}\n\tName: {type(ex).__name__} was raised: {ex}\n")
-                error_out(f'\tCount {file_count:3}/{total_files}:  File "{file}" could not be deleted!\tstatus: Error')
+                error_out(f'\tCount {file_count:3}/{total_files}:  File "{file}" could not be copied!\tstatus: Error')
                 count_error_files.append(file)
         else:
             yellow_out(f'\tCount {file_count:3}/{total_files}:  File "{file}" has a different format!\tstatus: Skip')
 
-    done_out(f'\nList of files x{len(os.listdir(dir_path))}: {os.listdir(dir_path)}')
-    done_out(f'Deleted files x{len(count_done_files)}: {count_done_files}')
-    done_out(f'Not deleted files(Errors) x{len(count_error_files)}: {count_error_files}')
+    done_out(f'\nList of files x{len(os.listdir(dir_path_paste))}: {os.listdir(dir_path_paste)}')
+    done_out(f'Copied files x{len(count_done_files)}: {count_done_files}')
+    done_out(f'Not copied files(Errors) x{len(count_error_files)}: {count_error_files}')
     done_out(f'Missing files: {total_files - len(count_error_files) - len(count_done_files)}')
     done_out('\tDone!')
 
 
-def main():
+def enter_path(mes, past_path=''):
     while True:
-        dir_path = input("Path to the directory: ").strip()
-        if os.path.exists(dir_path):
+        dir_path = input(mes).strip()
+        if dir_path == past_path:
+            error_out(f'The paths for copying and pasting files should not be equal!\n')
+        elif os.path.exists(dir_path):
             done_out(f"Path: '{dir_path}' status: OK")
-            delete_files(dir_path)
-            break
+            return dir_path
         else:
             error_out(f"Path: '{dir_path}' status: Not found")
             error_out(f"Пути '{dir_path}' не существует, введите другой!\n")
 
+
+def main():
+    dir_path_copy = enter_path("The path of the directory, where we copy: ")
+    dir_path_paste = enter_path("The path of the directory, where we paste: ", dir_path_copy)
+    copy_paste_files(dir_path_copy, dir_path_paste)
     exi_t()
 
 
 if __name__ == '__main__':
-    hello = YELLOW + " A program for deleting files " + RESET
+    hello = YELLOW + " A program for copying files of a certain type " + RESET
     print("\n", "{:*^75}".format(hello), "\n", sep='')
     print(f'Current Working Directory is: {os.getcwd()}\n')
     main()

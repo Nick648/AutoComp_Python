@@ -88,7 +88,7 @@ def fpdf_create_file():  # Create pdf file using 'fpdf' module
         if k_increase > 1:
             if not os.path.exists(os.path.join(WAY_DIR, 'Resized Images')):  # Creating a folder for Resized Images
                 os.mkdir(os.path.join(WAY_DIR, 'Resized Images'))
-            # print(f'Original: {width}x{height}')
+            # print(f'{img_name} -> Original: {width}x{height}')
             resized_image = image_item.resize((width * k_increase, height * k_increase))
             resized_img_path = os.path.join(WAY_DIR, 'Resized Images', "Resized " + img_name)
             resized_image.save(resized_img_path)
