@@ -1,6 +1,30 @@
 import pyautogui as auto
 import keyboard as key
+
 # import mouse
+auto.FAILSAFE = True
+
+
+def listen_keyboard():  # Not use!!!
+    text = '''
+        CHOICE: 
+            1) Some;
+            2) Next;
+            3) Exit;
+          Esc -> for exit
+    '''
+
+    while True:
+        print(text)
+        k = key.read_key()
+        if k == '1':
+            print(111)
+        elif k == '2':
+            print(222)
+        elif k == '3':
+            print(333)
+        elif k == 'esc':
+            break
 
 
 def main():
@@ -14,7 +38,7 @@ def main():
             auto.click(clicks=10)  # , interval = 0.1
             # auto.doubleClick()
             # auto.tripleClick()
-            i += 1
+            i += 1  # * 10 clicks
 
         if key.is_pressed(stop_key):
             break

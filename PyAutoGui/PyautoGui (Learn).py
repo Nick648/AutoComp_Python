@@ -1,8 +1,14 @@
+import time
 import time as tm
 import pyautogui as pg
 
-pg.FAILSAFE = True  # Ctrl+C остановка программы
+pg.FAILSAFE = True
 kk = pg.KEYBOARD_KEYS
+
+WIDTH, HEIGHT = pg.size()
+
+# print(pg.onScreen(500, 600))  # True
+# print(pg.onScreen(0, 10000))  # False
 
 '''
 tm.sleep(1)

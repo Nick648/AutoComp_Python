@@ -7,7 +7,8 @@ import keyboard
 from colorama import Fore, Style
 import pyautogui
 from fpdf import FPDF
-from tkinter import Tk
+
+# from tkinter import Tk
 
 # colorama.init()
 # Const module colorama
@@ -68,9 +69,10 @@ def display_resize_info(monitor_width, monitor_height, width, height):
 
 
 def fpdf_create_file():  # Create pdf file using 'fpdf' module
-    root = Tk()
-    monitor_height = root.winfo_screenheight()
-    monitor_width = root.winfo_screenwidth()
+    # root = Tk()
+    # monitor_width = root.winfo_screenwidth()
+    # monitor_height = root.winfo_screenheight()
+    monitor_width, monitor_height = pyautogui.size()
 
     # width, height = 1600, 900  # Screen size
     pdf = FPDF(unit='pt', format=(monitor_width, monitor_height))
@@ -167,7 +169,7 @@ def reading_clipboard():
         if keyboard.is_pressed('Esc'):
             break
 
-        time.sleep(0.3)  # The problem with ImageGrab.grabclipboard() if you remove sleep
+        time.sleep(1)  # The problem with ImageGrab.grabclipboard() if you remove sleep
 
     if count > 0:
         create_pdf_file()

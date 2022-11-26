@@ -1,0 +1,38 @@
+pygame.mouse.set_cursor()
+
+Pygame Cursor Constant           Description
+--------------------------------------------
+pygame.SYSTEM_CURSOR_ARROW       arrow
+pygame.SYSTEM_CURSOR_IBEAM       i-beam
+pygame.SYSTEM_CURSOR_WAIT        wait
+pygame.SYSTEM_CURSOR_CROSSHAIR   crosshair
+pygame.SYSTEM_CURSOR_WAITARROW   small wait cursor
+                                 (or wait if not available)
+pygame.SYSTEM_CURSOR_SIZENWSE    double arrow pointing
+                                 northwest and southeast
+pygame.SYSTEM_CURSOR_SIZENESW    double arrow pointing
+                                 northeast and southwest
+pygame.SYSTEM_CURSOR_SIZEWE      double arrow pointing
+                                 west and east
+pygame.SYSTEM_CURSOR_SIZENS      double arrow pointing
+                                 north and south
+pygame.SYSTEM_CURSOR_SIZEALL     four pointed arrow pointing
+                                 north, south, east, and west
+pygame.SYSTEM_CURSOR_NO          slashed circle or crossbones
+pygame.SYSTEM_CURSOR_HAND        hand
+
+for example:
+pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+
+    SYSTEM_CURSOR_ARROW = 0
+    SYSTEM_CURSOR_CROSSHAIR = 3
+    SYSTEM_CURSOR_HAND = 11
+    SYSTEM_CURSOR_IBEAM = 1
+    SYSTEM_CURSOR_NO = 10
+    SYSTEM_CURSOR_SIZEALL = 9
+    SYSTEM_CURSOR_SIZENESW = 6
+    SYSTEM_CURSOR_SIZENS = 8
+    SYSTEM_CURSOR_SIZENWSE = 5
+    SYSTEM_CURSOR_SIZEWE = 7
+    SYSTEM_CURSOR_WAIT = 2
+    SYSTEM_CURSOR_WAITARROW = 4

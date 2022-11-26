@@ -2,15 +2,16 @@ import time
 import pyautogui as pg
 import keyboard as key
 import os
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 # colorama.init()
-pg.FAILSAFE = True  # Ctrl+C остановка программы
 # Const module colorama
 RED = Fore.LIGHTRED_EX
 GREEN = Fore.LIGHTGREEN_EX
 YELLOW = Fore.LIGHTYELLOW_EX
 RESET = Style.RESET_ALL
+
+pg.FAILSAFE = True
 
 # Const directory
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))  # Without name file.py
