@@ -5,6 +5,14 @@ import requests
 
 from colorama import Fore, Style
 
+add = '''
+    Сделать прогу:
+    1) Берет из буфера обмена картинку скрина текста;
+    2) Закидывает ее на https://img2txt.com/ru;
+    3) Получает оттуда текст расшифровки текста с скрина;
+    4) Открывает блокнот записывает туда/кидает в буфер обмена;
+'''
+
 # colorama.init()
 # Const module colorama
 RED = Fore.LIGHTRED_EX
