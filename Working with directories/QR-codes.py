@@ -2,6 +2,7 @@
 import qrcode
 import cv2
 import os
+import time
 
 TYPES_FILE = ['.jpg', '.png', '.jpeg']
 
@@ -16,6 +17,8 @@ def creating_qrcode(link='https://github.com/Nick648'):
         img = qrcode.make(link)
         img.save(filename)
         print(f'QR-code {link} was created and saved in: {os.path.join(os.getcwd(), filename)}')
+        time.sleep(1)
+        os.startfile(filename)
     except Exception as ex:
         print(f'Name: {type(ex).__name__}; type: {type(ex)} -> {ex}')
 

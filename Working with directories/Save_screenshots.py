@@ -51,7 +51,8 @@ def create_dir():
 
 
 # For further development
-def display_resize_info(monitor_width, monitor_height, width, height):
+def display_resize_info(width, height):
+    monitor_width, monitor_height = pyautogui.size()
     print(f'Size screen: {monitor_width}x{monitor_height}')
     print(f'The original image size is wide x high: {width} x {height}')
     wc, ws = monitor_width // width, monitor_width / width
@@ -85,7 +86,7 @@ def fpdf_create_file():  # Create pdf file using 'fpdf' module
         image_item = Image.open(img_path)
         width, height = image_item.size
 
-        # display_resize_info(monitor_width, monitor_height, width, height)
+        # display_resize_info(width, height)
         k_increase = min(monitor_width // width, monitor_height // height)
         if k_increase > 1:
             if not os.path.exists(os.path.join(WAY_DIR, 'Resized Images')):  # Creating a folder for Resized Images

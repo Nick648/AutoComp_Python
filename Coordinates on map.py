@@ -3,6 +3,8 @@ import folium
 import os
 
 MOSCOW_KREMLIN = [55.75, 37.6167]
+MOSCOW = (55.747592, 37.619908)
+PETER = (59.925173, 30.330548)
 MAP = folium.Map(location=MOSCOW_KREMLIN, zoom_start=12)
 
 
@@ -56,6 +58,15 @@ def save_map():
     print(f'{os.path.join(os.getcwd(), filename)} was created and saved!')
 
 
+def distance_on_map(place_1=(55.747592, 37.619908), place_2=(59.925173, 30.330548)):
+    from geopy.distance import geodesic
+    distance_km = geodesic(MOSCOW, PETER).kilometers
+    print(f'Расстояние от Москвы до Питера составляет: {distance_km:.2f} км')
+
+    distance_km = geodesic(place_1, place_2).kilometers
+    return f'{distance_km:.2f} km'
+
+
 def main():
     search_ip_location()
 
@@ -65,6 +76,9 @@ def main():
 
     add_to_map([55.794416, 37.676620], 'парк Сокольники', 'парк Сокольники here')
     add_to_map(MOSCOW_KREMLIN, 'Moscow Kremlin', 'Кремль Москвы')
+
+    distance_on_map()
+
     save_map()
 
 
