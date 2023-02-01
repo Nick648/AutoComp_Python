@@ -31,19 +31,19 @@ def main():
     start_key = input('Клавиша запуска: ')
     stop_key = input('Клавиша остановки: ')
 
-    i = 0
+    count_click = 0
     while True:
         if key.is_pressed(start_key):
             # auto.click()
             auto.click(clicks=10)  # , interval = 0.1
             # auto.doubleClick()
             # auto.tripleClick()
-            i += 1  # * 10 clicks
+            count_click += 1  # * 10 clicks
 
         if key.is_pressed(stop_key):
             break
 
-    print(i)
+    print(f"Number of clicks = {count_click}")
 
 
 if __name__ == "__main__":
