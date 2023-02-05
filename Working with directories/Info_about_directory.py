@@ -28,12 +28,14 @@ def exi_t():  # Выход из программы
     a = '\nThank you for using our program!\nHave a nice day!\n'
     for i in a:
         print(GREEN + i, end='')
-        time.sleep(0.025)  # Приостановить выполнение программы
+        time.sleep(0.025)
     time.sleep(5)
     exit()
 
 
-def display_tree_dir(initial_path, size_dirs):  # Output of the directory tree and percent size
+def display_tree_dir(initial_path: str, size_dirs: dict) -> None:
+    """ Output of the directory tree and percent size """
+
     done_out('\nOutput of the directory tree and their percentage of the total size:\n')
 
     # Combining directory sizes into a tuple:
@@ -87,7 +89,7 @@ def display_tree_dir(initial_path, size_dirs):  # Output of the directory tree a
     print(f'Minimum directory size: {min_size_path} = {min_size_dir}  ->  {YELLOW + min_perc_size}')
 
 
-def get_max_str_size(size_bytes):  # Return str of max format of size
+def get_max_str_size(size_bytes: int) -> str:  # Return str of max format of size
     if size_bytes // 1024 == 0:
         size_bytes = "{:.3f}".format(size_bytes)
         return f'{size_bytes} bytes'
@@ -105,7 +107,7 @@ def get_max_str_size(size_bytes):  # Return str of max format of size
     return f'{size_gigabytes} GB'
 
 
-def get_str_size(size_bytes):  # Return str of different format of size
+def get_str_size(size_bytes: int) -> str:  # Return str of different format of size
     size_kilobytes = size_bytes / 1024
     size_megabytes = size_kilobytes / 1024
     size_gigabytes = size_megabytes / 1024
@@ -125,7 +127,7 @@ def display_info_dir_path(dir_path, dir_names, filenames, format_files_dir, tota
     yellow_out('*' * 50)
 
 
-def dir_info(initial_path):  # Main algorithm of program
+def dir_info(initial_path: str) -> None:  # Main algorithm of program
     format_files, size_dirs = dict(), dict()
     total_files, total_dirs, total_size = 0, 0, 0
     for dir_path, dir_names, filenames in os.walk(initial_path):  # , topdown=False
