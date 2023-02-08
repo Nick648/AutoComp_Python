@@ -5,26 +5,29 @@ from colorama import Fore, Style, init
 
 init(autoreset=True)  # Not need RESET at the end massage
 
-# Const module colorama
+# Const of module colorama
 RED = Fore.LIGHTRED_EX
 GREEN = Fore.LIGHTGREEN_EX
 YELLOW = Fore.LIGHTYELLOW_EX
 RESET = Style.RESET_ALL
 
+# Program constants
+TYPE_FILES = ['.jpg', '.jpeg', '.png', '.mp4', '.mp3', '.mov']
 
-def error_out(s):  # Вывод красного текста
+
+def error_out(s):  # Red text output
     print(RED + s, sep='')
 
 
-def done_out(s):  # Вывод зелёного текста
+def done_out(s):  # Green text output
     print(GREEN + s, sep='')
 
 
-def yellow_out(s):  # Вывод жёлтого текста
+def yellow_out(s):  # Yellow text output
     print(YELLOW + s, sep='')
 
 
-def exi_t():  # Выход из программы
+def exi_t():  # Exiting the program
     a = '\nThank you for using our program!\nHave a nice day!\n'
     for i in a:
         print(GREEN + i, end='')
@@ -199,14 +202,30 @@ def dir_info(initial_path: str) -> None:  # Main algorithm of program
     display_tree_dir(initial_path, size_dirs)
 
 
+def check_path(filenames: list) -> bool:
+    for file in filenames:
+        for search_type in TYPE_FILES:
+            if search_type.lower() in file.lower():
+                return True
+    return False
+
+
+def find_paths(initial_path: str) -> None:  # Main algorithm of program
+    dirs_files = []
+    for dir_path, dir_names, filenames in os.walk(initial_path):  # , topdown=False
+        # print(f"{dir_path=}; {dir_names=}; {filenames=}")
+        if check_path(filenames):
+            dirs_files.append(dir_path)
+    print()
+
+
 def main():  # Start program
     while True:
         initial_path = input("Path to the directory: ").strip()
 
         if os.path.exists(initial_path):
             done_out(f"Path: '{initial_path}' status: OK\n")
-            # print(get_str_size(os.path.getsize(initial_path)))
-            dir_info(initial_path)
+            find_paths(initial_path)
             break
         else:
             error_out(f"Path: '{initial_path}' status: Not found")
@@ -215,7 +234,7 @@ def main():  # Start program
 
 
 if __name__ == '__main__':  # Program entry point
-    hello = YELLOW + " Program for displaying directory information " + RESET
+    hello = YELLOW + " A program for finding file paths " + RESET
     print("\n", "{:*^80}".format(hello), "\n", sep='')
-    print(f'Current Working Directory is: {os.getcwd()}\n')
+    print(f"Current Working Directory is: {os.getcwd()}\n")
     main()
