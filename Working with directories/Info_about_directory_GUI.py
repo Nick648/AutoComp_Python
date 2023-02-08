@@ -50,8 +50,8 @@ def exi_t() -> None:
     text = '\nThank you for using our program!\nHave a nice day!\n'
     for sym in text:
         print(GREEN + sym, end='')
-        time.sleep(0.025)
-    time.sleep(3)
+        time.sleep(0.02)
+    time.sleep(2)
     exit()
 
 
@@ -77,6 +77,7 @@ def write_data_json(file_name: str, dump_dict: dict) -> None:
     file_path = os.path.join(WAY_DIR, f"{file_name}.json")
     with open(file=file_path, mode="w", encoding="utf-8") as write_file:
         json.dump(dump_dict, write_file, ensure_ascii=False, indent=5)
+    print(f"File: {file_path} {GREEN}was created!")
 
 
 def write_data_txt(file_name: str, write_text: str) -> None:
@@ -84,6 +85,7 @@ def write_data_txt(file_name: str, write_text: str) -> None:
     file_path = os.path.join(WAY_DIR, f"{file_name}.txt")
     with open(file=file_path, mode="w", encoding="utf-8") as txt_file:
         txt_file.write(write_text)
+    print(f"File: {file_path} {GREEN}was created!")
 
 
 def write_data_html(file_name: str, write_text: str) -> None:
@@ -91,16 +93,54 @@ def write_data_html(file_name: str, write_text: str) -> None:
     file_path = os.path.join(WAY_DIR, f"{file_name}.html")
     with open(file=file_path, mode="w", encoding="utf-8") as html_file:
         html_file.write(write_text)
+    print(f"File: {file_path} {GREEN}was created!")
 
 
-def display_tree_dir(initial_path: str, size_dirs: dict) -> str:
+def write_dict_info_paths_to_html(file_name: str, dict_paths: dict) -> None:
+    str_html = f"<font color='green' size=7>{file_name}</font><br><br>"
+    str_html += f"<font size=4>"
+    for path in dict_paths:
+        str_html += f"&emsp;&emsp;<font color=Magenta>Current path:&nbsp;{path}</font><br>"
+        for key_info in dict_paths[path]:
+            if "Number of" in key_info:
+                str_html += f"<font color=DarkGreen>{key_info}:&nbsp;{dict_paths[path][key_info]}</font><br>"
+            else:
+                str_html += f"{key_info}:&nbsp;{dict_paths[path][key_info]}<br>"
+        str_html += f"<font color=DarkOrange size=5>{'*' * 150}</font><br>"
+    write_data_html(file_name, str_html)
+
+
+def write_dict_total_info_path_to_html(file_name: str, dict_path_info: dict) -> None:
+    str_html = f"<font color='green' size=7>{file_name}</font><br><br>"
+    str_html += f"<font size=5>"
+    for key_info in dict_path_info:
+        if key_info == "Initial path":
+            str_html += f"&emsp;{key_info}:&nbsp;<font color=Magenta>{dict_path_info[key_info]}</font><br>"
+        elif key_info == "Formats (count)":
+            str_html += f"{key_info}:&nbsp;<br>"
+            for key_format in dict_path_info[key_info]:
+                str_html += f"&emsp;&emsp;{key_format:5}:&nbsp;{dict_path_info[key_info][key_format]:7}<br>"
+        else:
+            str_html += f"{key_info}:&nbsp;{dict_path_info[key_info]}<br>"
+    str_html += f"</font><br>"
+    write_data_html(file_name, str_html)
+
+
+def display_tree_dir(initial_path: str, size_dirs: dict) -> None:
     """ Output of the directory tree and percent size """
 
-    tree_str = f"\nOutput of the directory tree and their percentage of the total size:\n" \
+    tree_str = f"Output of the directory tree and their percentage of the total size:\n" \
                f"P.S. In parentheses, the size of all subfolders relative to the main directory is indicated.\n\n"
 
-    done_out('\nOutput of the directory tree and their percentage of the total size:')
-    done_out('P.S. In parentheses, the size of all subfolders relative to the main directory is indicated.\n')
+    tree_html = f"<font color='green' size=7>Directory tree</font><br>" \
+                f"<font color='DarkOrange' size=5.5>Output of the directory tree and their percentage of the total size:" \
+                f"<br>" \
+                f"P.S. In parentheses, the size of all subfolders relative to the main directory is indicated." \
+                f"<br><br></font>"
+    tree_html += f"<font size=5>"
+
+    # done_out('\nOutput of the directory tree and their percentage of the total size:')
+    # done_out('P.S. In parentheses, the size of all subfolders relative to the main directory is indicated.\n')
 
     # Combining directory sizes into a tuple:
     for path, size in size_dirs.items():
@@ -130,8 +170,11 @@ def display_tree_dir(initial_path: str, size_dirs: dict) -> str:
 
                 perc_size = "{:.3f}".format(size_dir[0] / size_dirs[initial_path] * 100) + '%'
                 common_perc_size = "{:.2f}".format(size_dir[1] / size_dirs[initial_path] * 100) + '%'
-                print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}  ({YELLOW + common_perc_size})')
+                # print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}  ({YELLOW + common_perc_size})')
+
                 tree_str += f"{indent}{dir_path}  ->  {perc_size}  ({common_perc_size})\n"
+                tree_html += f"{'&emsp;' * dif_level * 2}{dir_path}&emsp;->&emsp;{perc_size}&emsp;" \
+                             f"<font color='Chocolate'>({common_perc_size})</font><br>"
                 continue
 
             if size_dir > max_size_dir:
@@ -141,33 +184,49 @@ def display_tree_dir(initial_path: str, size_dirs: dict) -> str:
                 min_size_dir = size_dir
                 min_size_path = dir_path
             perc_size = "{:.3f}".format(size_dir / size_dirs[initial_path] * 100) + '%'
-            print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}')
+            # print(f'{indent}{dir_path}  ->  {YELLOW + perc_size}')
+
             tree_str += f"{indent}{dir_path}  ->  {perc_size}\n"
+            tree_html += f"{'&emsp;' * dif_level * 2}{dir_path}&emsp;->&emsp;{perc_size}<br>"
         else:
-            print(dir_path)
+            # print(dir_path)
             tree_str += f"{dir_path}\n"
+            tree_html += f"<font color='magenta'>{dir_path}</font><br>"
+    tree_html += f"</font>"
     try:
         max_perc_size = "{:.3f}".format(max_size_dir / size_dirs[initial_path] * 100) + '%'
         min_perc_size = "{:.3f}".format(min_size_dir / size_dirs[initial_path] * 100) + '%'
         str_max_size_dir, str_min_size_dir = get_max_str_size(max_size_dir), get_max_str_size(min_size_dir)
 
         max_file = get_max_file(max_size_path)
-        print(f'\nMaximum directory size: {max_size_path} = {str_max_size_dir}  ->  {YELLOW + max_perc_size}')
+        # print(f'\nMaximum directory size: {max_size_path} = {str_max_size_dir}  ->  {YELLOW + max_perc_size}')
+
         tree_str += f"\n\nMaximum directory size: {max_size_path} = {str_max_size_dir}  ->  {max_perc_size}\n"
+        tree_html += f"<font size=5>"
+        tree_html += f"<br><br>Maximum directory size: {max_size_path} = {str_max_size_dir}&emsp;->&emsp;" \
+                     f"<font color='purple'>{max_perc_size}</font><br>"
         if max_file:
             path_max_file, size_max_file = max_file
             max_perc_size_file = "{:.3f}".format(size_max_file / max_size_dir * 100) + '%'
-            print(f"\tMaximum file size: {path_max_file} = {get_max_str_size(size_max_file)}  ->  "
-                  f"{YELLOW}In folder {max_perc_size_file}")
+            # print(f"\tMaximum file size: {path_max_file} = {get_max_str_size(size_max_file)}  ->  "
+            #       f"{YELLOW}In folder {max_perc_size_file}")
+
             tree_str += f"\tMaximum file size: {path_max_file} = {get_max_str_size(size_max_file)}  ->  " \
                         f"In folder {max_perc_size_file}\n"
+            tree_html += f"&emsp;&emsp;Maximum file size: {path_max_file} = " \
+                         f"{get_max_str_size(size_max_file)}&emsp;->&emsp;" \
+                         f"<font color='purple'>In folder {max_perc_size_file}</font><br>"
 
-        print(f'Minimum directory size: {min_size_path} = {str_min_size_dir}  ->  {YELLOW + min_perc_size}')
+        # print(f'Minimum directory size: {min_size_path} = {str_min_size_dir}  ->  {YELLOW + min_perc_size}')
         tree_str += f"Minimum directory size: {min_size_path} = {str_min_size_dir}  ->  {min_perc_size}\n"
+        tree_html += f"Minimum directory size: {min_size_path} = {str_min_size_dir}&emsp;->&emsp;" \
+                     f"<font color='purple'>{min_perc_size}</font><br>"
+        tree_html += f"</font>"
     except ZeroDivisionError:
         pass
 
-    return tree_str
+    write_data_txt("Directory tree", tree_str)
+    write_data_html("Directory tree", tree_html)
 
 
 def get_max_file(path_with_max_file: str):
@@ -309,6 +368,7 @@ def dir_info(initial_path: str) -> None:
 
     if info_paths_for_json:
         write_data_json("Detailed info dirs", info_paths_for_json)
+        write_dict_info_paths_to_html("Detailed info dirs", info_paths_for_json)
     if total_dirs or total_files:
         total_info_for_json["Initial path"] = initial_path
         total_info_for_json["Total folders"] = total_dirs
@@ -318,10 +378,10 @@ def dir_info(initial_path: str) -> None:
         sorted_format_files = dict(sorted(format_files.items(), key=lambda x: x[1], reverse=True))
         total_info_for_json["Formats (count)"] = sorted_format_files
         write_data_json("Total info directory", total_info_for_json)
+        write_dict_total_info_path_to_html("Total info directory", total_info_for_json)
 
     size_dirs[initial_path] = total_size
-    tree_str = display_tree_dir(initial_path, size_dirs)
-    write_data_txt("Directory tree", tree_str)
+    display_tree_dir(initial_path, size_dirs)
     # write_data_html("Directory tree", tree_str)
 
 
@@ -331,10 +391,8 @@ def main():
     Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
     initial_path = fd.askdirectory(title="Select a folder", initialdir="/")
 
-    # initial_path = input("Path to the directory: ").strip()
-
     if os.path.exists(initial_path):
-        done_out(f"Path: '{initial_path}' status: OK\n")
+        print(f"Path: '{initial_path}' status: {GREEN}OK\n")
         create_dir()
         dir_info(initial_path)
     else:
