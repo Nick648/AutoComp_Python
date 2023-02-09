@@ -1,7 +1,7 @@
 # Add encoding file and color in file !
 
-import random  # Добавление модуля random
-import time  # Добавление модуля time
+import random
+import time
 import os
 
 from colorama import Fore, Style, init
@@ -17,60 +17,64 @@ RESET = Style.RESET_ALL
 # Const
 # HOME_DIR = os.path.expanduser('~')
 DESKTOP_DIR = os.path.expanduser('~') + r'\Desktop'
-chars = '+-/*!$#?=@<>1234567890'  # Все возможные и цифры
+# DESKTOP_DIR = os.path.join(HOME_DIR, "Desktop")
+chars = '+-/*!$#?=@<>1234567890'  # Все возможные символы и цифры
 
 
 # print("Путь к рабочему столу: " + DESKTOP_DIR + "\n")
 
-def error_out(s):  # Вывод красного текста
-    print(RED + s, sep='')
+def error_out(text: str) -> None:
+    """ Red text output """
+    print(RED + text, sep='')
 
 
-def done_out(s):  # Вывод зелёного текста
-    print(GREEN + s, sep='')
+def done_out(text: str) -> None:
+    """ Green text output """
+    print(GREEN + text, sep='')
 
 
-def yellow_out(s):  # Вывод жёлтого текста
-    print(YELLOW + s, sep='')
+def yellow_out(text: str) -> None:
+    """ Yellow text output """
+    print(YELLOW + text, sep='')
 
 
-def exi_t():  # Выход из программы
-    a = '\nСпасибо за использование нашего продукта!\nХорошего дня!\n'
-    for i in a:
-        print(GREEN + i, end='')
-        time.sleep(random.choice([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04]))  # Приостановить выполнение программы
+def exi_t() -> None:
+    """ Exiting the program """
+
+    text = '\nСпасибо за использование нашего продукта!\nХорошего дня!\n'
+    for sym in text:
+        print(GREEN + sym, end='')
+        time.sleep(random.choice([0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04]))
     input()
     exit()
 
 
-def add_letters(k):  # Добавление букв
+def add_letters(shift: int) -> None:  # Добавление букв
     global chars  # Изменение переменной chars вне функции add_letters() тоже
 
     for i in range(26):
-        chars += chr(i + k)
+        chars += chr(i + shift)
 
 
-def quest(i):  # Ввод
+def quest(mes: str) -> int:  # Ввод int
     while True:
-        q = input(i)
+        user_input = input(mes)
 
-        if q.isdigit() and int(q) > 0:  # Проверка число ли и положительности
+        if user_input.isdigit() and int(user_input) > 0:  # Проверка число ли и положительности
             break
-
-        elif q == '000':
+        elif user_input == '000':
             exi_t()
-
-        elif not (q.isdigit()) or int(q) <= 0:
+        else:
             error_out('Надо ввести целое положительное ЧИСЛО!\nЕсли хотите выйти, то введите "000".\n')
 
-    return int(q)
+    return int(user_input)
 
 
-def out_password():  # Вывод паролей в консоль
+def out_password() -> None:  # Вывод паролей в консоль
     answer_pol = ['да', 'yes', 'yeah', '+', 'y']  # Возможные положительные ответы
     answer_neg = ['нет', 'no', 'not', 'none', '-', 'n']  # Возможные отрицательные ответы
     while True:
-        s = input('\nВведите Ваш ответ: ')
+        s = input(YELLOW + 'Желаете их вывести в консоли?\nВведите Ваш ответ: ' + RESET)
 
         if s.lower() in answer_pol:
             f = open(file=DESKTOP_DIR + r'\passwords.txt', mode='r', encoding='cp1251')
@@ -90,58 +94,56 @@ def out_password():  # Вывод паролей в консоль
             print("Возможные отрицательные варианты ответов: \n", answer_neg)
 
 
-def generation(length):
-    password = ''
-    dk, uk, lk = 0, 0, 0  # Кол-во цифр, букв верхнего и нижнего регистра
-    for i in range(length):
-        s = random.choice(chars)
+def generation(length: int) -> str:
+    password = ""
 
-        if i == 0 and s not in chars[22::]:  # Проверка того, что первый символ в пароле не число или знак
-            while True:
-                s = random.choice(chars)
-                if s in chars[22::]:
-                    break
+    # Кол-во цифр, букв верхнего и нижнего регистра, и символов
+    digit_count, upper_count, lower_count, sym_count = 0, 0, 0, 0
+    for i in range(length):
+        new_sym = random.choice(chars)
+
+        if i == 0:
+            while new_sym not in chars[22::]:  # Проверка того, что первый символ в пароле не число или знак
+                new_sym = random.choice(chars)
 
         # Счет цифр и букв верхнего и нижнего регистра
-        if s.isdigit():
-            dk += 1
-        if s.isupper():
-            uk += 1
-        if s.islower():
-            lk += 1
+        if new_sym.isdigit():
+            digit_count += 1
+        elif new_sym.isupper():
+            upper_count += 1
+        elif new_sym.islower():
+            lower_count += 1
+        else:
+            sym_count += 1
 
-        password += s
+        password += new_sym
 
     # Проверка надежности пароля
-    if dk <= 0 or uk <= 0 or lk <= 0:
+    if not (digit_count and upper_count and lower_count and sym_count):
         return generation(length)
 
     return password
 
 
-def in_file(number, length):  # Ввод сгенерированных паролей в файл
+def in_file(number: int, length: int) -> None:
+    """ Ввод сгенерированных паролей в файл """
+
     file = open(file=DESKTOP_DIR + r'\passwords.txt', mode='w', encoding='utf-8')  # Открытие файла на рабочем столе
     file.write('Ваши пароли: \n')
 
     for x in range(number):
         password = generation(length)  # Генерация паролей тут!
-        k = str(x + 1) + ' password: '
         file.write(f'\n{str(x + 1)} password: \n{password}\n')
-        # file.write('\n' + k)
-        # file.write('\n' + password + '\n')
 
     done_out('Пароли сгенерированы и сохранены в файле "passwords.txt" на Вашем рабочем столе.')
     file.close()  # Закрытие файла
 
 
-def app():  # Основная программа
+def app() -> None:  # Основная программа
     global chars
 
     add_letters(65)  # Добавление в список shars заглавных латинских букв
     add_letters(97)  # Добавление в список shars строчных латинских букв
-
-    hello = YELLOW + " Программа по генерации случайных паролей " + RESET
-    print("\n", "{:*^75}".format(hello), "\n", sep='')
 
     number = quest('Введите кол-во паролей: ')
     while True:
@@ -152,10 +154,11 @@ def app():  # Основная программа
             break
 
     in_file(number, length)  # Генерация паролей тут!
-    yellow_out('Желаете их вывести в консоли?')
     out_password()
     exi_t()
 
 
 if __name__ == '__main__':
+    hello = YELLOW + " Программа по генерации случайных паролей " + RESET
+    print("\n", "{:*^75}".format(hello), "\n", sep='')
     app()  # Вызов работы программы

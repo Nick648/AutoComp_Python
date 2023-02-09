@@ -17,7 +17,7 @@ WIDTH, HEIGHT = pg.size()  # Get the size of the primary monitor.
 
 
 # Узнать координаты непрерывно
-def find_pos_infinity():
+def find_pos_infinity() -> None:
     start_key = input('Клавиша запуска: ')
     stop_key = input('Клавиша остановки: ')
 
@@ -33,7 +33,7 @@ def find_pos_infinity():
 
 # pg.alert(text = 'To use, press: "Ctrl"', title = 'Position of mouse', button = 'OK')
 
-def main():
+def main() -> None:
     print(f"SIZE WINDOW(x,y): {WIDTH}x{HEIGHT}\n")
 
     root = tk.Tk()
