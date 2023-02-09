@@ -17,3 +17,4 @@ opencv-python~=4.6.0.66
 folium~=0.13.0
 pyfiglet~=0.8.post1
 art~=5.8
+progress~=1.6

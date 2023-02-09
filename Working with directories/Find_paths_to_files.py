@@ -5,6 +5,7 @@ from tkinter import *
 import tkinter.filedialog as fd
 import json
 import datetime
+from progress.bar import IncrementalBar
 
 from colorama import Fore, Style, init
 
@@ -69,7 +70,7 @@ def create_dir() -> None:
     else:
         version = 1
         while os.path.exists(WAY_DIR):
-            NAME_DIR = f'Directory Info {date_d}_{date_m}_{date_y} version=={version}'
+            NAME_DIR = f'File Search {date_d}_{date_m}_{date_y} version=={version}'
             WAY_DIR = os.path.join(CUR_DIR, NAME_DIR)
             version += 1
         os.mkdir(WAY_DIR)
@@ -148,11 +149,17 @@ def check_path(dir_path: str, filenames: list[str], dif_level: int) -> bool:
 
 def find_paths(initial_path: str) -> None:
     """ Main algorithm of program """
+    max_val = 0
+    for _ in os.walk(initial_path):
+        max_val += 1
+    bar = IncrementalBar('Progress', max=max_val)
     lower_level = initial_path.count("\\")
     for dir_path, dir_names, filenames in os.walk(initial_path):  # , topdown=False
+        bar.next()
         # print(f"{dir_path=}; {dir_names=}; {filenames=}")
         dif_level = dir_path.count("\\") - lower_level
         check_path(dir_path, filenames, dif_level)
+    print()
     if PATHS_FILES_DICT:
         create_dir()
         write_data_json("Info found files", PATHS_FILES_DICT)
