@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.filedialog as fd
 import json
-import datetime
+from datetime import datetime
 
 from colorama import Fore, Style, init
 
@@ -18,7 +18,7 @@ YELLOW = Fore.LIGHTYELLOW_EX
 RESET = Style.RESET_ALL
 
 # Consts for time and date
-today = datetime.datetime.today()
+today = datetime.today()
 date_y, date_m, date_d = today.year, today.month, today.day
 # time_h, time_m, time_s = today.hour, today.minute, today.second
 
