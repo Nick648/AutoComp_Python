@@ -18,3 +18,4 @@ folium~=0.13.0
 pyfiglet~=0.8.post1
 art~=5.8
 progress~=1.6
+# pip uninstall auto-py-to-exe eel bottle gevent greenlet -y && pip install auto-py-to-exe==2.13.0 Eel==0.12.4 bottle==0.12.19 gevent==21.12.0

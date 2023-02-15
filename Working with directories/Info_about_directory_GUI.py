@@ -22,7 +22,7 @@ today = datetime.today()
 date_y, date_m, date_d = today.year, today.month, today.day
 # time_h, time_m, time_s = today.hour, today.minute, today.second
 
-# Name of directory
+# Name of directories
 DESKTOP_DIR = os.path.expanduser('~') + r'\Desktop'  # Full path to the desktop
 CUR_DIR_FILE = os.path.abspath(__file__)  # Full path to the file, with name file.py
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))  # Without name file.py

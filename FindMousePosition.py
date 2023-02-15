@@ -34,11 +34,16 @@ def find_pos_infinity() -> None:
 # pg.alert(text = 'To use, press: "Ctrl"', title = 'Position of mouse', button = 'OK')
 
 def main() -> None:
+    def on_closing():
+        root.destroy()
+        exit()  # FIXME
+
     print(f"SIZE WINDOW(x,y): {WIDTH}x{HEIGHT}\n")
 
     root = tk.Tk()
     root.resizable(False, False)
     root.attributes("-topmost", True)  # Поверх других окон!!!
+    root.protocol("WM_DELETE_WINDOW", on_closing)
 
     root.title('Location mouse')
     greeting = f"Size window: {WIDTH}x{HEIGHT}\n" + "Press: 'Ctrl' to start\n" + "Press: 'Esc' to stop"

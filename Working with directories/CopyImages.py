@@ -33,7 +33,7 @@ def main(start_dir):  # The main algorithm of the program
 
     for file in os.listdir():
         # print(file, type(file), file[-3:])
-        if file[-3:].lower() in ['jpg', 'png']:
+        if file[-3:].lower() in ['jpg', 'png']:  # FIXME: add input types
             os.startfile(file)  # don't know how that close
             # shell_process = subprocess.Popen([file], shell=True)
             # print('shell_process:', shell_process)
