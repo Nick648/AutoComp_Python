@@ -14,6 +14,7 @@ YELLOW = Fore.LIGHTYELLOW_EX
 RESET = Style.RESET_ALL
 
 WIDTH, HEIGHT = pg.size()  # Get the size of the primary monitor.
+infinity_key = True
 
 
 # Узнать координаты непрерывно
@@ -35,8 +36,9 @@ def find_pos_infinity() -> None:
 
 def main() -> None:
     def on_closing():
+        global infinity_key
         root.destroy()
-        exit()  # FIXME
+        infinity_key = False
 
     print(f"SIZE WINDOW(x,y): {WIDTH}x{HEIGHT}\n")
 
@@ -51,7 +53,7 @@ def main() -> None:
     label.pack()
     mouse_x0 = -1
     mouse_y0 = -1
-    while True:
+    while infinity_key:
         if keyboard.is_pressed('Esc'):
             bye = "Thank you for using the program!"
             label.config(text=bye, fg='green')
@@ -99,7 +101,7 @@ def main() -> None:
 
     # root.mainloop()
     print("\n------->", GREEN + "Done")
-    time.sleep(2)
+    time.sleep(1)
 
 
 if __name__ == '__main__':
