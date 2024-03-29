@@ -109,6 +109,7 @@ def algorithm():  # Основной алгоритм
     print("Количество чисел в тексте: ", count_digits)
     for item_keys in sorted(dict_words.keys()):
         if item_keys == "\n":
+            # pass
             print("Абзацев:", dict_words[item_keys], "\n")
         else:
             print(item_keys.title(), ": ", dict_words[item_keys])

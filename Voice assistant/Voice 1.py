@@ -1,6 +1,63 @@
-# import SpeechRecognition as sr
 import pyttsx3
+import speech_recognition as sr
+import pyaudio  # for speech_recognition -> microphone
 import sys
+
+MICROPHONE_INDEX = 0
+
+
+def get_property_settings() -> None:
+    text = 'какой-нибудь текст'
+    tts = pyttsx3.init()
+    rate = tts.getProperty('rate')  # Скорость произношения
+    # tts.setProperty('rate', rate - 40)
+
+    volume = tts.getProperty('volume')  # Громкость голоса
+    # tts.setProperty('volume', volume + 0.9)
+
+    voices = tts.getProperty('voices')
+    count_voices = len(voices)
+
+    # Задать голос по умолчанию
+    # tts.setProperty('voice', 'ru')
+
+    # Попробовать установить предпочтительный голос
+    # for voice in voices:
+    #     if voice.name == 'Anna':
+    #         tts.setProperty('voice', voice.id)
+    #
+    # tts.say(text)
+    # tts.runAndWait()
+
+    print(f"{rate=}; {volume=}; {voices=}; {count_voices=}\n")
+
+
+def get_microphone_index() -> None:
+    for index, name in enumerate(sr.Microphone.list_microphone_names()):
+        print("Microphone with name \"{1}\" found for `Microphone(device_index={0})`".format(index, name))
+    print()
+
+
+def check_record_speech() -> None:
+    for index, name in enumerate(sr.Microphone.list_microphone_names()):
+        r = sr.Recognizer()
+        try:
+            with sr.Microphone(device_index=index) as source:
+                print(f'\tНастраиваюсь. mic = {index}')
+                r.adjust_for_ambient_noise(source, duration=0.5)  # настройка посторонних шумов
+                print('Слушаю...')
+                audio = r.listen(source)
+            print('Услышала.')
+
+            try:
+                query = r.recognize_google(audio, language='ru-RU')
+                text = query.lower()
+                print(f'Вы сказали: {text}')
+            except Exception as ex:
+                print(f'{type(ex).__name__}: Not recognize!')
+
+        except Exception as ex:
+            print(f"{type(ex).__name__}: device_index={index} does not work!")
 
 
 def check_en_voices():
@@ -50,16 +107,15 @@ def check_rus_voices():
         engine.runAndWait()
 
 
-def voicePlay(string):  # try_2
+def voice_play(string):  # try_2
 
     engine = pyttsx3.init()
-    engine.say(string)
     try:
+        engine.say(string)
         engine.runAndWait()
     except Exception as e:
         print("Error:", e)
         pass
-    engine.runAndWait()
     print("voicePlay")
 
 
@@ -76,9 +132,12 @@ def talk(words):
 
 
 if __name__ == '__main__':
-    check_rus_voices()
+    get_property_settings()
+    get_microphone_index()
+    check_record_speech()
+    # check_rus_voices()
     # check_en_voices()
     # talk('Добрый день')
     # talk('Hi, I am Gina!')
-    # voicePlay('Добрый день')
-    # voicePlay('Hi, I am Gina!')
+    # voice_play('Добрый день')
+    # voice_play('Hi, I am Gina!')

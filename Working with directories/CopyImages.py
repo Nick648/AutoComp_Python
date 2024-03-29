@@ -50,6 +50,11 @@ def main(start_dir):  # The main algorithm of the program
                     os.kill(child_pid, signal.SIGTERM)
                     os.kill(shell_process.pid, signal.SIGTERM)
                     '''
+                    # import cv2
+                    # image = cv2.imread("./путь/к/изображению.расширение")
+                    # cv2.imshow("Image", image)
+                    # cv2.waitKey(0)
+                    # cv2.destroyAllWindows()
                     break
                 if key.is_pressed('Q'):
                     shutil.copyfile(start_dir + start_dir[2] + file, new_loc_folder + start_dir[2] + file)
